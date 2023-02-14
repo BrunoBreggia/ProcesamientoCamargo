@@ -34,6 +34,7 @@ class Senial:
         pass
 
     def remover_nan(self):
+        # TODO: considerar el caso de tenr vario nan consecutivos dentro de la señal
         nans = np.logical_or(np.isnan(self.foot_height), np.isnan(self.angle))
 
         # Trim signal if there are NaNs on the ends
