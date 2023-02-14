@@ -234,17 +234,12 @@ class Senial:
                 axs[0].axvline(x=HS, color='blue', linestyle='--')
                 axs[1].axvline(x=HS, color='blue', linestyle='--')
 
-    def scatter(self, normalizar=True):
-        if normalizar:
-            plt.scatter(self.foot_height/np.std(self.foot_height) - np.mean(self.foot_height),
-                        self.angle/np.std(self.angle) - np.mean(self.angle))
-            plt.xlabel(f'Altura pie {"der" if self.foot_side=="R" else "izq"} normalizado')
-            plt.ylabel(f'Angulo de {self.angle_description} {"der" if self.angle_side=="R" else "izq"} normalizado')
-        else:
-            plt.scatter(self.foot_height,
-                        self.angle)
-            plt.xlabel(f'Altura pie {"der" if self.foot_side=="R" else "izq"}')
-            plt.ylabel(f'Angulo de {self.angle_description} {"der" if self.angle_side=="R" else "izq"}')
+    def scatter(self):
+        plt.scatter(self.angle,
+                    self.foot_height,
+                    s=2)
+        plt.ylabel(f'Altura pie {"der" if self.foot_side=="R" else "izq"}')
+        plt.xlabel(f'Angulo de {self.angle_description} {"der" if self.angle_side=="R" else "izq"}')
         plt.grid()
 
     def normalizar(self):
