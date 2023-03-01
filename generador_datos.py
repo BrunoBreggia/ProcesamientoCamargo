@@ -3,14 +3,6 @@ from iterables import *
 from matlabStruct import create_matlabStruct
 from Senial import Senial
 
-# variables de archivo:
-# n_file = 0  # 14
-# filename = 'sujetos/' + file_list[n_file]
-# toe = 'rtoe'
-# angle = 'rhip_addu'
-# ciclo = 'swing'  # puede ser 'full', 'swing', 'stance', 'nods'
-# norm = True
-
 
 def obtener_senial(n_file, toe, angle, ciclo, norm):
     """
