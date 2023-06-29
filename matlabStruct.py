@@ -21,6 +21,7 @@ def create_matlabStruct(filename) -> dict:
         subfields = struct_data[pasada][()].dtype.names
         subdata = [item for item in struct_data[pasada][()]]
         struct_data[pasada] = {k: v for k, v in zip(subfields, subdata)}
+
         # separo los eventos de toe-off y heel-strike ('LTO', 'LHS', 'RTO', 'RHS')
         event_names = struct_data[pasada]['events'][()].dtype.names  # name of events in tuple
         event_data = [item for item in struct_data[pasada]['events'][()]]
@@ -38,6 +39,6 @@ def create_matlabStruct(filename) -> dict:
 
 
 if __name__ == '__main__':
-    Sujeto1 = create_matlabStruct('sujetos/AB20_mine_excluded.mat')
+    Sujeto1 = create_matlabStruct('sujetos/AB09_mine_excluded.mat')
 
 

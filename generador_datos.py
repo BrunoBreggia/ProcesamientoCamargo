@@ -4,12 +4,12 @@ from matlabStruct import create_matlabStruct
 from Senial import Senial
 
 # variables de archivo:
-n_file = 14  # 0
+n_file = 3
 filename = 'sujetos/' + file_list[n_file]
 toe = 'rtoe'
-angle = 'rhip_addu'
-ciclo = 'swing'  # puede ser 'full', 'swing', 'stance', 'nods'
-norm = True
+angle = 'rankle'
+ciclo = 'nods'  # puede ser 'full', 'swing', 'stance', 'nods'
+norm = False
 
 
 def obtener_senial():
@@ -59,3 +59,7 @@ def obtener_senial():
 
     # la señal a procesar esta en la variable 'definitivo'
     return definitivo
+
+
+s = obtener_senial()
+s.scatter()
