@@ -3,7 +3,7 @@ from iterables import *
 from matlabStruct import create_matlabStruct
 from Senial import Senial
 
-
+# TODO: que reciba nombre del archivo, no numero de sujeto
 def obtener_senial(n_file, toe, angle, ciclo, norm):
     """
     Devuelve un objeto señal listo para ser pasada como entrada a la red neuronal mine
@@ -66,3 +66,8 @@ def obtener_senial(n_file, toe, angle, ciclo, norm):
 
     # la señal a procesar esta en la variable 'definitivo'
     return definitivo
+
+
+if __name__ == "__main__":
+    signal = obtener_senial(0, 'rtoe', 'rknee', 'swing', False)
+    signal.graficar()
