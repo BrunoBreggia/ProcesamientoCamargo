@@ -15,6 +15,16 @@ class Senial:
     def __init__(self, foot_height: np.ndarray, foot_side: str, events: dict,
                  angle: np.ndarray, angle_description: str, angle_side: str,
                  timestamp: np.ndarray = None):
+        """
+
+        :param foot_height[np.array]: señal de altura de pie
+        :param foot_side[str]: "R" si derecho, "L" si izquierdo
+        :param events[dict]: diccionario con eventos de toe-off y heel-strike
+        :param angle[np.array]: señal de apertura angular
+        :param angle_description[str]: que angulo es (ej "knee")
+        :param angle_side[str]: "R" si derecho, "L" si izquierdo
+        :param timestamp[np.array]: señal que se corresponde con indices temporales
+        """
 
         self.foot_height = foot_height
         if foot_side not in ['R', 'L']:
@@ -29,9 +39,6 @@ class Senial:
         self.angle_side = angle_side
 
         self.timestamp = timestamp if timestamp is not None else None
-
-    def set_info(self):
-        pass
 
     def remover_nan(self):
         # TODO: considerar el caso de tenr vario nan consecutivos dentro de la señal
@@ -253,9 +260,6 @@ class Senial:
         # normalizo señal angular
         self.angle -= np.mean(self.angle)
         self.angle /= np.std(self.angle)
-
-    def filtrar_eventos_espureos(self):
-        pass
 
     def autosplit(self):
         """
