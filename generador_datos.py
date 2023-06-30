@@ -3,8 +3,8 @@ from iterables import *
 from matlabStruct import create_matlabStruct
 from Senial import Senial
 
-# TODO: que reciba nombre del archivo, no numero de sujeto
-def obtener_senial(n_file, toe, angle, ciclo, norm):
+
+def obtener_senial(filename, toe, angle, ciclo, norm):
     """
     Devuelve un objeto señal listo para ser pasada como entrada a la red neuronal mine
     que evaluara la informacion mutua entre la altura del pie y la señal de apertura angular.
@@ -12,8 +12,8 @@ def obtener_senial(n_file, toe, angle, ciclo, norm):
     llamada desde otro script y no recibe ningun parametro.
 
     :param
-    n_file [int]
-        Numero del archivo de la simulacion (de 0 a 21)
+    filename [str]
+        Nombre del archivo mat con información de la señal a levantar
     toe [str]: "rtoe", "ltoe"
         Cual pie analizar
     angle [str]: "rankle" (entre otros)
@@ -24,8 +24,6 @@ def obtener_senial(n_file, toe, angle, ciclo, norm):
         Bandera para normalizar la señal. La normalización es estadística,
         y se realiza en función del ciclo full. Luego se recorta, si es solicitado.
     """
-
-    filename = 'sujetos/' + file_list[n_file]
 
     # pre-procesamiento:
     Sujeto = create_matlabStruct(filename)
@@ -42,6 +40,8 @@ def obtener_senial(n_file, toe, angle, ciclo, norm):
 
     completa = np.sum(seniales)  # concatenacion
     if norm: completa.normalizar()
+
+    definitivo = None
 
     if ciclo == 'full':
         definitivo = completa
@@ -69,5 +69,8 @@ def obtener_senial(n_file, toe, angle, ciclo, norm):
 
 
 if __name__ == "__main__":
-    signal = obtener_senial(0, 'rtoe', 'rknee', 'swing', False)
+    n_file = 0
+    filename = 'sujetos/' + file_list[n_file]
+
+    signal = obtener_senial(filename, 'rtoe', 'rknee', 'swing', False)
     signal.graficar()
