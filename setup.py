@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="Camargo",
+    name="ProcesamientoCamargo",
     version="0.1",
     description="Tools to load data from the Camargo Biomechanic Database",
     long_description=long_description,
