@@ -72,5 +72,18 @@ if __name__ == "__main__":
     n_file = 0
     filename = 'sujetos/' + file_list[n_file]
 
-    signal = obtener_senial(filename, 'rtoe', 'rknee', 'swing', False)
-    signal.graficar()
+    signal1 = obtener_senial(filename, 'rtoe', 'rknee', 'stance', False)
+    signal2 = obtener_senial(filename, 'rtoe', 'rknee', 'swing', False)
+    #signal.scatter()
+
+    import matplotlib.pyplot as plt
+    plt.scatter(signal1.angle,
+                signal1.foot_height,
+                s=2, color='r', label='stance')
+    plt.scatter(signal2.angle,
+                signal2.foot_height,
+                s=2, color='b', label='swing')
+    plt.legend(loc='best')
+    plt.ylabel(f'Height of {"right" if signal1.foot_side == "R" else "left"} toe [cm]')
+    plt.xlabel(f'{"Right" if signal1.angle_side == "R" else "Left"} {signal1.angle_description} angle [degrees]')
+    plt.grid()
