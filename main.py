@@ -3,34 +3,35 @@ from Senial import Senial
 from iterables import file_list
 
 if __name__ == '__main__':
-    Sujeto1 = create_matlabStruct('sujetos/' + file_list[0])
+    Sujeto1 = create_matlabStruct('../DatosCamargo_nogc/' + file_list[1])
 
     # señales de pasada 1
-    print(Sujeto1['S1']['header'])
+    print(Sujeto1['S9']['header'])
     print('---------------')
-    print(Sujeto1['S1']['rtoe'])
+    print(Sujeto1['S9']['rtoe'])
     print('---------------')
-    print(Sujeto1['S1']['rankle'])
+    print(Sujeto1['S9']['rankle'])
 
-    s1 = Senial(Sujeto1['S1']['rtoe'], 'R', Sujeto1['S1']['events'],
-                Sujeto1['S1']['lknee'], 'knee', 'L',
-                Sujeto1['S1']['header'])
+    S9 = Senial(Sujeto1['S9']['rtoe'], 'R', Sujeto1['S9']['events'],
+                Sujeto1['S9']['lknee'], 'knee', 'L',
+                Sujeto1['S9']['header'])
 
     # s2 = Senial(Sujeto1['S6']['rtoe'], 'R', Sujeto1['S2']['events'],
     #             Sujeto1['S6']['lknee'], 'knee', 'L',
     #
     #             Sujeto1['S6']['header'])
-    a, b = s1.autosplit()
+    a, b, c = S9.autosplit()
 
     astance = a.recortar_ciclo('stance')
     bstance = b.recortar_ciclo('stance')
+    cstance = c.recortar_ciclo('stance')
 
-    stance = astance + bstance
+    stance = astance + bstance + cstance
     stance.graficar()
-    # ss = s1 + s2
-    # s1.normalizar()
-    # # s1.graficar()
-    # a, b = s1.autosplit()
+    # ss = S9 + s2
+    # S9.normalizar()
+    # # S9.graficar()
+    # a, b = S9.autosplit()
     # bswing = b.recortar_ciclo('swing')
     # bswing.scatter()
     # # a.graficar()

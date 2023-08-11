@@ -16,7 +16,6 @@ class Senial:
                  angle: np.ndarray, angle_description: str, angle_side: str,
                  timestamp: np.ndarray = None):
         """
-
         :param foot_height[np.array]: señal de altura de pie
         :param foot_side[str]: "R" si derecho, "L" si izquierdo
         :param events[dict]: diccionario con eventos de toe-off y heel-strike
@@ -39,6 +38,12 @@ class Senial:
         self.angle_side = angle_side
 
         self.timestamp = timestamp if timestamp is not None else None
+
+    def create_empty_signal(self):
+        new = Senial(foot_height=np.array([]),foot_side=self.foot_side, events=self.events,
+                  angle=np.array([]), angle_description=self.angle_description, angle_side=self.angle_side,
+                  timestamp=np.array([]))
+        return new
 
     def remover_nan(self):
         # TODO: considerar el caso de tenr vario nan consecutivos dentro de la señal
@@ -91,7 +96,13 @@ class Senial:
 
         split_idxs = np.empty((len(eventos[0]) + len(eventos[1]),), dtype=np.int32)
 
-        if eventos[1][0][1] < eventos[0][0][1]:
+        if not eventos[0] and not eventos[1]:
+            portions = [self.create_empty_signal()]
+        elif not eventos[0]:
+            portions = self.split([eventos[1][0][1]])[0]
+        elif not eventos[1]:
+            portions = self.split([eventos[0][0][1]])[1]
+        elif eventos[1][0][1] < eventos[0][0][1]:
             split_idxs[0::2] = eventos[1][:, 1]
             split_idxs[1::2] = eventos[0][:, 1]
             portions = self.split(split_idxs)[0::2]
@@ -118,7 +129,13 @@ class Senial:
 
         split_idxs = np.empty((len(eventos[0]) + len(eventos[1]),), dtype=np.int32)
 
-        if eventos[1][0][1] < eventos[0][0][1]:
+        if (eventos[0].size == 0) and (eventos[1].size == 0):
+            portions = [self.create_empty_signal()]
+        elif eventos[0].size == 0:
+            portions = self.split([eventos[1][0][1]])[0]
+        elif eventos[1].size == 0:
+            portions = self.split([eventos[0][0][1]])[1]
+        elif eventos[1][0][1] < eventos[0][0][1]:
             split_idxs[0::2] = eventos[1][:, 1]
             split_idxs[1::2] = eventos[0][:, 1]
             portions = self.split(split_idxs)[0::2]
@@ -128,9 +145,11 @@ class Senial:
             portions = self.split(split_idxs)[1::2]
 
         # return portions
-        complete = portions[0]
-        for i in range(1, len(portions)):
-            complete += portions[i]
+        # complete = portions[0]
+        # for i in range(1, len(portions)):
+        #     complete += portions[i]
+
+        complete = np.sum(portions)
 
         return complete
 
@@ -147,7 +166,13 @@ class Senial:
 
         split_idxs = np.empty((len(eventos[0]) + len(eventos[1]),), dtype=np.int32)
 
-        if eventos[1][0][1] < eventos[0][0][1]:
+        if not eventos[0] and not eventos[1]:
+            portions = [self.create_empty_signal()]
+        elif not eventos[0]:
+            portions = self.split([eventos[1][0][1]])[0]
+        elif not eventos[1]:
+            portions = self.split([eventos[0][0][1]])[1]
+        elif eventos[1][0][1] < eventos[0][0][1]:
             split_idxs[0::2] = eventos[1][:, 1]
             split_idxs[1::2] = eventos[0][:, 1]
             portions = self.split(split_idxs)[0::2]
