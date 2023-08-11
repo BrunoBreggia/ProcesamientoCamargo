@@ -96,7 +96,7 @@ class Senial:
 
         split_idxs = np.empty((len(eventos[0]) + len(eventos[1]),), dtype=np.int32)
 
-        if not eventos[0] and not eventos[1]:
+        if (eventos[0].size == 0) and (eventos[1].size == 0):
             portions = [self.create_empty_signal()]
         elif not eventos[0]:
             portions = self.split([eventos[1][0][1]])[0]
@@ -166,7 +166,7 @@ class Senial:
 
         split_idxs = np.empty((len(eventos[0]) + len(eventos[1]),), dtype=np.int32)
 
-        if not eventos[0] and not eventos[1]:
+        if (eventos[0].size == 0) and (eventos[1].size == 0):
             portions = [self.create_empty_signal()]
         elif not eventos[0]:
             portions = self.split([eventos[1][0][1]])[0]
