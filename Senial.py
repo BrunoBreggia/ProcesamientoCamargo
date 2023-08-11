@@ -98,9 +98,9 @@ class Senial:
 
         if (eventos[0].size == 0) and (eventos[1].size == 0):
             portions = [self.create_empty_signal()]
-        elif not eventos[0]:
+        elif eventos[0].size == 0:
             portions = self.split([eventos[1][0][1]])[0]
-        elif not eventos[1]:
+        elif eventos[1].size == 0:
             portions = self.split([eventos[0][0][1]])[1]
         elif eventos[1][0][1] < eventos[0][0][1]:
             split_idxs[0::2] = eventos[1][:, 1]
@@ -168,9 +168,9 @@ class Senial:
 
         if (eventos[0].size == 0) and (eventos[1].size == 0):
             portions = [self.create_empty_signal()]
-        elif not eventos[0]:
+        elif eventos[0].size == 0:
             portions = self.split([eventos[1][0][1]])[0]
-        elif not eventos[1]:
+        elif eventos[1].size == 0:
             portions = self.split([eventos[0][0][1]])[1]
         elif eventos[1][0][1] < eventos[0][0][1]:
             split_idxs[0::2] = eventos[1][:, 1]
