@@ -31,7 +31,6 @@ def obtener_senial(filename, toe, angle, ciclo, norm):
     seniales = []
 
     for n in trials:
-        print(n)
         pasada = Senial(Sujeto[n][toe], toe[0].upper(), Sujeto[n]['events'],
                         Sujeto[n][angle], angle[1:], angle[0].upper(),
                         Sujeto[n]['header'])
