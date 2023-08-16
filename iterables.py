@@ -18,7 +18,7 @@ file_list = ['AB06_mine_excluded_nogc.mat',
              'AB24_mine_excluded_nogc.mat',
              'AB25_mine_excluded_nogc.mat',
              'AB27_mine_excluded_nogc.mat',
-             'AB29_mine_excluded_nogc.mat',
+             'AB28_mine_excluded_nogc.mat',
              'AB30_mine_excluded_nogc.mat',
              ]
 
