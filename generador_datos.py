@@ -81,11 +81,11 @@ def obtener_senial(filename, toe, angle, ciclo, norm):
 
 
 if __name__ == "__main__":
-    n_file = 1
+    n_file = 0
     filename = '../DatosCamargo_nogc/' + file_list[n_file]
 
-    signal1 = obtener_senial(filename, 'rtoe', 'rknee', 'stance', False)
-    signal2 = obtener_senial(filename, 'rtoe', 'rknee', 'swing', False)
+    signal1 = obtener_senial(filename, 'ltoe', 'rknee', 'stance', False)
+    signal2 = obtener_senial(filename, 'ltoe', 'rknee', 'swing', False)
     #signal.scatter()
 
     import matplotlib.pyplot as plt
