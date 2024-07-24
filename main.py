@@ -12,7 +12,7 @@ if __name__ == '__main__':
     print('---------------')
     print(Sujeto1['S9']['rankle'])
 
-    S9 = Senial(Sujeto1['S9']['rtoe'], 'L', Sujeto1['S9']['events'],
+    S9 = Senial(Sujeto1['S9']['rtoe'], 'R', Sujeto1['S9']['events'],
                 Sujeto1['S9']['lknee'], 'knee', 'L',
                 Sujeto1['S9']['header'])
 

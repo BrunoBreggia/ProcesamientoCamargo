@@ -41,13 +41,13 @@ class Senial:
         self.timestamp = timestamp if timestamp is not None else None
 
     def create_empty_signal(self):
-        new = Senial(foot_height=np.array([]),foot_side=self.foot_side, events=self.events,
-                  angle=np.array([]), angle_description=self.angle_description, angle_side=self.angle_side,
-                  timestamp=np.array([]))
+        new = Senial(foot_height=np.array([]), foot_side=self.foot_side, events=self.events,
+                     angle=np.array([]), angle_description=self.angle_description, angle_side=self.angle_side,
+                     timestamp=np.array([]))
         return new
 
     def remover_nan(self):
-        # TODO: considerar el caso de tenr vario nan consecutivos dentro de la señal
+        # TODO: considerar el caso de tener varios nan consecutivos dentro de la señal
         nans = np.logical_or(np.isnan(self.foot_height), np.isnan(self.angle))
 
         # Trim signal if there are NaNs on the ends
@@ -174,10 +174,10 @@ class Senial:
         if (eventos[0].size == 0) and (eventos[1].size == 0):
             portions = [self.create_empty_signal()]
         elif eventos[0].size == 0:
-            split_idxs[:] = [eventos[1][0,1]]
+            split_idxs[:] = [eventos[1][0, 1]]
             portions = [self.split(split_idxs)[0]]
         elif eventos[1].size == 0:
-            split_idxs[:] = [eventos[0][0,1]]
+            split_idxs[:] = [eventos[0][0, 1]]
             portions = [self.split(split_idxs)[1]]
         elif eventos[1][0][1] < eventos[0][0][1]:
             split_idxs[0::2] = eventos[1][:, 1]
@@ -246,6 +246,7 @@ class Senial:
                      f'{"der" if self.angle_side=="R" else "izq"} (abajo)')
         axs[0].grid()
         axs[0].plot(self.foot_height)
+        # axs[0].set_ylim(bottom=30, top=125)
         axs[1].grid()
         axs[1].plot(self.angle)
 
@@ -255,10 +256,10 @@ class Senial:
                 eventos = [self.events['LTO'], self.events['LHS']]
             else:
                 eventos = [self.events['RTO'], self.events['RHS']]
-            for TO in eventos[0][:,1]:
+            for TO in eventos[0][:, 1]:
                 axs[0].axvline(x=TO, color='red', linestyle='--')
                 axs[1].axvline(x=TO, color='red', linestyle='--')
-            for HS in eventos[1][:,1]:
+            for HS in eventos[1][:, 1]:
                 axs[0].axvline(x=HS, color='green', linestyle='--')
                 axs[1].axvline(x=HS, color='green', linestyle='--')
 
@@ -267,10 +268,10 @@ class Senial:
                 eventos = [self.events['LTO'], self.events['LHS']]
             else:
                 eventos = [self.events['RTO'], self.events['RHS']]
-            for TO in eventos[0][:,1]:
+            for TO in eventos[0][:, 1]:
                 axs[0].axvline(x=TO, color='magenta', linestyle='--')
                 axs[1].axvline(x=TO, color='magenta', linestyle='--')
-            for HS in eventos[1][:,1]:
+            for HS in eventos[1][:, 1]:
                 axs[0].axvline(x=HS, color='blue', linestyle='--')
                 axs[1].axvline(x=HS, color='blue', linestyle='--')
 

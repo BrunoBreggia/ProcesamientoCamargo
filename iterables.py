@@ -43,3 +43,11 @@ cycle_types = ['full',
                'stance',
                'nods',
                ]
+
+angles_translated = {'ankle': 'tobillo',
+                     'subt': 'subtalar',
+                     'knee': 'rodilla',
+                     'hip_addu': 'aducción de cadera',
+                     'hip_flex': 'flexión de cadera',
+                     'hip_rot': 'rotación de cadera',
+                     }
