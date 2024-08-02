@@ -56,7 +56,7 @@ def imagen_x4(data_filename, chosen_angle, to_file=False):
         i, j = (i, j + 1) if j != 1 else (i + 1, 0)
 
     if to_file:
-        plt.savefig(to_file)  # , bbox_inches='tight')
+        plt.savefig(to_file)
         plt.close()
     else:
         plt.show()
