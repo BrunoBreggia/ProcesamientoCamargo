@@ -2,16 +2,17 @@ from iterables import *
 from Senial import Senial
 import matplotlib.pyplot as plt
 from generador_datos import obtener_senial
+import pandas as pd
 
 """
 Graficas de dispersion x4
 """
 
-plt.rcParams.update({'font.size': 12})
-plt.rcParams["figure.figsize"] = (10, 8.19)  # values in inches
-
 
 def imagen_x4(data_filename, chosen_angle, to_file=False):
+    plt.rcParams.update({'font.size': 12})
+    plt.rcParams["figure.figsize"] = (10, 8.19)  # values in inches
+
     fig, axs = plt.subplots(2, 2)
 
     plt.subplots_adjust(left=0.1,
@@ -62,6 +63,91 @@ def imagen_x4(data_filename, chosen_angle, to_file=False):
         plt.show()
 
 
+def imagenes_comparacion(infile, ciclo, outfile=False):
+    plt.rcParams.update({'font.size': 12})
+    plt.rcParams["figure.figsize"] = (15, 8.19)  # values in inches
+
+    fig, axs = plt.subplots(2, 6)
+
+    plt.subplots_adjust(left=0.1,
+                        bottom=0.1,
+                        right=0.95,
+                        top=0.95,
+                        wspace=0.1,
+                        hspace=0.2)
+
+    angles = ["ankle", "knee", "hip_flex", "hip_rot", "hip_addu", "subt"]
+    if ciclo == "swing":
+        color = "b"
+    elif ciclo == "stance":
+        color = "r"
+    elif ciclo == "nods":
+        color = "orange"
+    else:
+        color = "purple"
+
+    # im tags
+    df = pd.read_csv("../Statistical_analysis/sim06_medianas_realizaciones_nuevo.csv")
+
+    # ipsilaterales
+    for index, ax in enumerate(axs.flatten()):
+        angle = angles[index]
+        signal = obtener_senial(infile, "rtoe", "r" + angle, ciclo, False)   # R-R
+        # signal += obtener_senial(infile, "ltoe", "l" + angle, ciclo, False)  # L-L
+        im = df[(df["ciclo"] == ciclo) &
+                (df["angulo"] == angle.replace("_", "-")) &
+                (df["lateral"] == "ipsilateral")
+                ]["mediana"].mean()
+
+        ax.grid()
+        min_height = min(signal.foot_height)
+        ax.scatter(signal.angle,
+                   signal.foot_height - min_height,
+                   s=2, color=color, label=ciclo)
+
+        ax.set_ylim([-10, 120])
+        ax.set(title=f'IM:{im:.3}')
+        if index == 0:
+            ax.set(ylabel=f'Altura de pie ipsilateral [mm]')
+        else:
+            ax.set(yticklabels=[])
+        if index == 5:
+            break
+
+    # contralaterales
+    for index, ax in enumerate(axs.flatten()):
+        if index <= 5:
+            continue
+        angle = angles[index % 6]
+        signal = obtener_senial(infile, "ltoe", "r" + angle, ciclo, False)   # L-R
+        # signal += obtener_senial(infile, "rtoe", "l" + angle, ciclo, False)  # R-L
+        im = df[(df["ciclo"] == ciclo) &
+                (df["angulo"] == angle.replace("_", "-")) &
+                (df["lateral"] == "contralateral")
+                ]["mediana"].mean()
+
+        if index == 6:
+            ax.set(ylabel=f'Altura pie contralateral [mm]')
+        else:
+            ax.set(yticklabels=[])
+        ax.set_ylim([-10, 120])
+        ax.set(xlabel=f'{angles[index % 6]} [°]')
+        ax.grid()
+        min_height = min(signal.foot_height)
+        ax.scatter(signal.angle,
+                   signal.foot_height - min_height,
+                   s=2, color=color, label=ciclo)
+        ax.set(title=f'IM:{im:.3}')
+        # if index == 11:
+        #     plt.legend(loc="best")
+
+    if outfile:
+        plt.savefig(outfile)
+        plt.close()
+    else:
+        plt.show()
+
+
 if __name__ == "__main__":
 
     n_file = 0  # Sujeto 06
@@ -69,6 +155,12 @@ if __name__ == "__main__":
 
     # imagen_x4(filename, "knee")
 
-    for angle in [i[1:] for i in angles_tested]:
-        output_file = f'../Documento Final/apendice2/{angle}.png'
-        imagen_x4(filename, angle, output_file)
+    # for angle in [i[1:] for i in angles_tested]:
+    #     output_file = f'../Documento Final/apendice2/{angle}.png'
+    #     imagen_x4(filename, angle, output_file)
+
+    # for ciclo in ["swing", "stance", "nods", "full"]:
+    #     out_file = f"imagenes_comparacion_{ciclo}.pdf"
+    #     imagenes_comparacion(filename, ciclo, out_file)
+
+    imagenes_comparacion(filename, "full")
