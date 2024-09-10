@@ -26,7 +26,7 @@ graph TD
     full["Ciclo completo"]
     full --> swing["Fase de Vuelo"]
     full --> stance["Fase de Apoyo"]
-    stance --> stanceH["Apoyo de\n Hallux"]
+    stance --> stanceH["Apoyo de Hallux"]
 ```
 
 La clase **Senial** también provee de los medios necesarios para
