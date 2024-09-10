@@ -42,7 +42,7 @@ def imagen_x4(data_filename, chosen_angle, to_file=False):
                    s=3, color='orange', label='1er apoyo doble')
         ax.scatter(signal3.angle,
                    signal3.foot_height - min_height,
-                   s=3, color='r', label='nods')
+                   s=3, color='r', label='apoyo H')
 
         if (i, j) == (0, 1):
             ax.legend(loc='best')
@@ -92,15 +92,19 @@ def imagenes_comparacion(infile, ciclo, outfile=False):
     # ipsilaterales
     for index, ax in enumerate(axs.flatten()):
         angle = angles[index]
+
+        # corrección de offset
+        full = obtener_senial(infile, "rtoe", "r" + angle, "full", False)   # R-R
+        min_height = min(full.foot_height)
+
         signal = obtener_senial(infile, "rtoe", "r" + angle, ciclo, False)   # R-R
         # signal += obtener_senial(infile, "ltoe", "l" + angle, ciclo, False)  # L-L
         im = df[(df["ciclo"] == ciclo) &
                 (df["angulo"] == angle.replace("_", "-")) &
                 (df["lateral"] == "ipsilateral")
-                ]["mediana"].mean()
+                ]["mediana"].median()
 
         ax.grid()
-        min_height = min(signal.foot_height)
         ax.scatter(signal.angle,
                    signal.foot_height - min_height,
                    s=2, color=color, label=ciclo)
@@ -108,7 +112,7 @@ def imagenes_comparacion(infile, ciclo, outfile=False):
         ax.set_ylim([-10, 120])
         ax.set(title=f'IM:{im:.3}')
         if index == 0:
-            ax.set(ylabel=f'Altura de pie ipsilateral [mm]')
+            ax.set(ylabel=f'Altura de pie ipsilateral')
         else:
             ax.set(yticklabels=[])
         if index == 5:
@@ -119,21 +123,25 @@ def imagenes_comparacion(infile, ciclo, outfile=False):
         if index <= 5:
             continue
         angle = angles[index % 6]
+
+        # corrección de offset
+        full = obtener_senial(infile, "ltoe", "r" + angle, "full", False)  # R-R
+        min_height = min(full.foot_height)
+
         signal = obtener_senial(infile, "ltoe", "r" + angle, ciclo, False)   # L-R
         # signal += obtener_senial(infile, "rtoe", "l" + angle, ciclo, False)  # R-L
         im = df[(df["ciclo"] == ciclo) &
                 (df["angulo"] == angle.replace("_", "-")) &
                 (df["lateral"] == "contralateral")
-                ]["mediana"].mean()
+                ]["mediana"].median()
 
         if index == 6:
-            ax.set(ylabel=f'Altura pie contralateral [mm]')
+            ax.set(ylabel=f'Altura pie contralateral')
         else:
             ax.set(yticklabels=[])
         ax.set_ylim([-10, 120])
-        ax.set(xlabel=f'{angles[index % 6]} [°]')
+        ax.set(xlabel=f'{angles[index % 6]}')
         ax.grid()
-        min_height = min(signal.foot_height)
         ax.scatter(signal.angle,
                    signal.foot_height - min_height,
                    s=2, color=color, label=ciclo)
@@ -155,12 +163,12 @@ if __name__ == "__main__":
 
     # imagen_x4(filename, "knee")
 
-    # for angle in [i[1:] for i in angles_tested]:
-    #     output_file = f'../Documento Final/apendice2/{angle}.png'
-    #     imagen_x4(filename, angle, output_file)
+    for angle in [i[1:] for i in angles_tested]:
+        output_file = f'../Documento Final/apendice1/{angle}.png'
+        imagen_x4(filename, angle, output_file)
 
     # for ciclo in ["swing", "stance", "nods", "full"]:
-    #     out_file = f"imagenes_comparacion_{ciclo}.pdf"
+    #     out_file = f"imagenes_comparacion_{ciclo}_mediana.png"
     #     imagenes_comparacion(filename, ciclo, out_file)
 
-    imagenes_comparacion(filename, "full")
+    # imagenes_comparacion(filename, "swing")

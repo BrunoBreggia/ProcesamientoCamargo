@@ -36,7 +36,6 @@ for angle in angles:
     cycles[angle] = contenido, toff
 
 fig, axs = plt.subplots(3, 2)
-fig.tight_layout(pad=0.05)
 # set the spacing between subplots
 # plt.subplot_tool()
 
@@ -60,7 +59,35 @@ for angle_name, (angle_signal, toff) in reversed(cycles.items()):
         j = 0
         i += 1
 
+fig.tight_layout(pad=0.05)
 # plt.plot(ciclo)
+plt.show()
+
+"""
+Grafica con la evolucion temporal solamente de las articulación de la rodilla
+"""
+
+n_file = 0
+filename = '../DatosCamargo_nogc/' + file_list[n_file]
+plt.rcParams.update({'font.size': 14})
+plt.rcParams["figure.figsize"] = (10, 5)  # values in inches
+
+signal = obtener_senial(filename, 'rtoe', 'rknee', 'full', False)
+ini, fin = np.int16(signal.events['RHS'][0:2, 1])
+toff = int(signal.events['RTO'][0, 1] - ini)
+
+plt.figure()
+plt.grid()
+cycle = signal.angle[ini:fin]
+percentage = np.linspace(0, 100, len(cycle))
+plt.plot(percentage, cycle)
+plt.xlabel("Porcentaje de ciclo de marcha [%]")
+plt.ylabel("Apertura angular [°]")
+
+plt.axvline(0, color="green", linestyle="--")
+plt.axvline(100, color="green", linestyle="--")
+plt.axvline(percentage[toff], color="red", linestyle="--")
+plt.tight_layout()
 plt.show()
 
 """
@@ -71,6 +98,7 @@ print(type(signal.foot_height))
 ini, fin = np.int16(signal.events['RHS'][2:4, 1])
 toff = int(signal.events['RTO'][2, 1] - ini)
 
+plt.rcParams["figure.figsize"] = (10, 5)  # values in inches
 plt.figure()
 plt.grid()
 cycle = signal.foot_height[ini:fin]
@@ -78,7 +106,7 @@ min_height = min(cycle)
 cycle -= min_height  # quito el bias
 percentage = np.linspace(0, 100, len(cycle))
 plt.plot(percentage, cycle)
-plt.xlabel("Altura de pie durante un ciclo de marcha")
+plt.xlabel("Porcentaje del ciclo de marcha [%]")
 plt.ylabel("Altura [mm]")
 
 plt.axvline(0, color="green", linestyle="--")
