@@ -1,5 +1,7 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from sympy.printing.pretty.pretty_symbology import line_width
+
 from iterables import *
 from Senial import Senial
 import matplotlib.pyplot as plt
@@ -215,4 +217,78 @@ plt.ylabel("Altura del pie derecho [mm]")
 # plt.ylabel("Altura del pie derecho [mm]")
 # plt.legend(loc='best')
 plt.show()
+
+"""
+Despeje de pie con eventos de interés
+"""
+
+# extraigo porcion de señal que me interesa
+n_file = 0
+filename = '../DatosCamargo_nogc/' + file_list[n_file]
+signal = obtener_senial(filename, 'rtoe', 'rknee', 'full', False)
+ini, fin = 8200, 8900
+cycle = signal.foot_height[ini:fin]
+min_height = min(cycle)
+cycle -= min_height  # quito el bias
+
+# obtengo los eventos de interés
+hs_in_range = (signal.events['RHS'][:,1] > ini) & (signal.events['RHS'][:,1] < fin)
+heel_strike = signal.events['RHS'][:,1][hs_in_range] - ini
+to_in_range = (signal.events['RTO'][:,1] > ini) & (signal.events['RTO'][:,1] < fin)
+toe_off = signal.events['RTO'][:,1][to_in_range] - ini
+opto_in_range = (signal.events['LTO'][:,1] > ini) & (signal.events['LTO'][:,1] < fin)
+opposite_toe_off = signal.events['LTO'][:,1][opto_in_range] - ini
+
+# grafico
+plt.rcParams.update({'font.size': 14})
+plt.rcParams["figure.figsize"] = (15, 5)  # values in inches
+plt.figure()
+
+plt.plot(np.arange(0,len(cycle)), cycle)
+plt.xlabel("Muestras")
+plt.ylabel("Altura [mm]")
+
+for hs in heel_strike:
+    plt.axvline(hs, color="green", linestyle="--", linewidth=3)
+for to in toe_off:
+    plt.axvline(to, color="red", linestyle="--", linewidth=3)
+for opto in opposite_toe_off:
+    plt.axvline(opto, color="magenta", linestyle="--", linewidth=3)
+
+plt.grid()
+plt.tight_layout()
+
+"""
+Selecciono fases de la marcha de interés (individualmente)
+Correr despues del anterior
+"""
+
+limits = {
+    "swing" : [toe_off, heel_strike],
+    "stance" : [heel_strike, toe_off],
+    "nods" : [opposite_toe_off, toe_off]
+}
+
+fase_escogida = "nods"
+inis, fins = limits[fase_escogida]
+
+if inis[0] < fins[0]:
+    ini = int(inis[1])
+    fin = int(fins[1])
+else:
+    ini = int(inis[0])
+    fin = int(fins[1])
+
+# grafico
+plt.rcParams.update({'font.size': 14})
+plt.rcParams["figure.figsize"] = (5, 5)  # values in inches
+plt.figure()
+
+enumeracion = np.arange(0,len(cycle))
+plt.plot(enumeracion[ini:fin], cycle[ini:fin])
+plt.xlabel("Muestras")
+plt.ylabel("Altura [mm]")
+plt.ylim([0,100])
+plt.grid()
+plt.tight_layout()
 
